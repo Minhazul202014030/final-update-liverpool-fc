@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script src="https://www.gstatic.com/firebasejs/4.1.3/firebase.js"></script>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+
+    <ul id="list">
+
+    </ul>
+
+    <script src="js/main.js"></script>
+    <script>
+         const firebaseConfig = {
+    apiKey: "AIzaSyCQuC0BBUG00ORwhtjEOyHgUcRK29DgHKE",
+    authDomain: "liverpool-56f52.firebaseapp.com",
+    databaseURL: "https://liverpool-56f52-default-rtdb.firebaseio.com",
+    projectId: "liverpool-56f52",
+    storageBucket: "liverpool-56f52.appspot.com",
+    messagingSenderId: "945641864889",
+    appId: "1:945641864889:web:3669dcd342a6b7d1852568",
+    measurementId: "G-MY72Y517CC"
+  };
+
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+
+  var stdNo=0;
+
+function addItemsToList(email,msg,name,subject)
+{
+    var ul=document.getElementById('list');
+    var header=document.createElement('h2');
+
+    var _email=document.createElement('li');
+    var _msg=document.createElement('li');
+    var _name=document.createElement('li');
+    var _subject=document.createElement('li');
+
+    header.innerHTML='Person- '+(++stdNo);
+
+    _email.innerHTML='Email : '+email;
+    _msg.innerHTML='Msg : '+msg;
+    _name.innerHTML='Name : '+name;
+    _subject.innerHTML='Subject : '+subject;
+
+    ul.appendChild(header);
+    ul.appendChild(_email);
+    ul.appendChild(_msg);
+    ul.appendChild(_name);
+    ul.appendChild(_subject);
+
+
+
+}
+
+function FetchAllData()
+{
+    firebase.database().ref('User').once('value',function(snapshot){
+snapshot.forEach(
+    function(ChildSnapshot){
+        let name=ChildSnapshot.val().name;
+        let email=ChildSnapshot.val().email;
+        let msg=ChildSnapshot.val().msg;
+        let subject=ChildSnapshot.val().subject;
+
+        addItemsToList(email,msg,name,subject);
+
+
+    }
+);
+
+    });
+}
+
+window.onload(FetchAllData());
+
+    </script>
+</body>
+</html>
